@@ -1,0 +1,74 @@
+///User Authentication Routes
+
+----Register a New User---
+Route: /register
+Method: POST
+Handler: registerUser
+
+----User Login----
+Route: /login
+Method: POST
+Handler: loginUser
+
+----User Logout----
+Route: /logout
+Method: POST
+Handler: logoutUser
+User Profile Routes
+
+--------Get User Profile----
+Route: /profile
+Method: GET
+Handler: getUserProfile
+
+
+---------Update User Profile------
+Route: /profile
+Method: PUT
+Handler: updateUserProfile
+Event Management Routes
+
+---------View All Events-------
+Route: /events
+Method: GET
+Handler: getAllEvents
+
+------View Event Details------
+Route: /events/:eventId
+Method: GET
+Handler: getEventDetails
+
+
+---------Book an Event-----
+Route: /events/:eventId/book
+Method: POST
+Handler: bookEvent
+
+
+-------User Actions------
+Bookmark an Event
+Route: /events/:eventId/bookmark
+Method: POST
+Handler: bookmarkEvent
+
+-----View Bookmarked Events-----
+Route: /bookmarks
+Method: GET
+Handler: getBookmarkedEvents
+Miscellaneous
+
+----Contact Us---
+Route: /contact
+Method: POST
+Handler: contactUs
+
+----Messaging---
+Route: /messages
+Method: GET
+Handler: getMessages
+
+-----Send a Message----
+
+Route: /messages
+Method: POST
+Handler: sendMessage
