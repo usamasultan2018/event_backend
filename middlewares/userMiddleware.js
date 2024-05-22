@@ -6,7 +6,7 @@ const userMiddleware = (req,res,next)=>{
     if(!authHeader){
         return res.status(401).json({
             success:false,
-            error:"Token not found"
+            error:"Token not found!"
         });
     }
     try{
