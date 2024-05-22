@@ -36,7 +36,7 @@ router.post('/signup', async (req, res) => {
     };
     const token = generateToken(payload);
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: 'User added successfully',
       user: savedUser,
