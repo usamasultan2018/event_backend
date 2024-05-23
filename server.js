@@ -1,10 +1,10 @@
 const express= require("express");
 const app = express();
-const db = require('./db');
+const db = require('./config/db');
 const bodyParser = require('body-parser');
-const registerRoutes = require('./routes/./auth/registerRoutes');
-const loginRoutes = require('./routes/./auth/loginRoutes');
-const addEventRoutes = require('./routes/event/addEventRoutes');
+const authRoutes = require("././routes/authRoutes");
+const eventRoutes = require('./routes/eventRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 app.use(bodyParser.json());
 
@@ -17,9 +17,9 @@ app.get('/',(req,res)=>{
     res.status(200).json("The Event Management Application");
 });
 // routes 
-app.use("/auth",registerRoutes);
-app.use("/auth",loginRoutes);
-app.use("/event",addEventRoutes);
+app.use("/auth",authRoutes);
+app.use("/event",eventRoutes);
+app.use('/user',userRoutes),
 app.listen(PORT,()=>{
 console.log(`Server is running on PORT:${PORT}`);
 });

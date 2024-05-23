@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 // Define the event schema
 const eventSchema = new mongoose.Schema({
+  imageUrl:{
+    type:String,
+    required:true,
+  },
   title: {
     type: String,
     required: true,
@@ -33,11 +37,6 @@ const eventSchema = new mongoose.Schema({
   },
   ticketQty: {
     type: Number,
-    required: true
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
     required: true
   }
 }, {
