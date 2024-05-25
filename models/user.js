@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  verifiedUser :{
+    type:Boolean,
+    default:false,
+  },
   otp: { type: String } // New field for OTP
 });
 userSchema.pre('save',async function(next){

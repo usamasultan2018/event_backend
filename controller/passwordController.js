@@ -84,7 +84,37 @@ const forgotPassword = async (req, res) => {
         });
     }
 };
-
+const resendOTP = async (req, res) => {
+    try {
+      const { email } = req.body;
+  
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found.',
+        });
+      }
+  
+      const otp = generateOTP();
+      user.otp = otp;
+      await user.save();
+  
+      const emailText = `Your OTP for password reset is: ${otp}.`;
+      await sendMail({ to: email, subject: "Password Reset OTP", text: emailText });
+  
+      res.status(200).json({
+        success: true,
+        message: 'New OTP sent to your email address.',
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'An error occurred while resending the OTP.',
+        error: error.message,
+      });
+    }
+  };
 // Controller method to handle reset password request
 const resetPassword = async(req,res)=>{
     try{
@@ -118,5 +148,5 @@ const resetPassword = async(req,res)=>{
 module.exports = {
     changePassword,
     forgotPassword,
-    resetPassword
+    resetPassword,resendOTP
 };
