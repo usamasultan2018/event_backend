@@ -29,7 +29,8 @@ const userSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now
-  }
+  },
+  otp: { type: String } // New field for OTP
 });
 userSchema.pre('save',async function(next){
     const user = this;

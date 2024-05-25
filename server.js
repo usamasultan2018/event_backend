@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const authRoutes = require("././routes/authRoutes");
 const eventRoutes = require('./routes/eventRoutes');
 const userRoutes = require('./routes/userRoutes');
+const passwordRoutes = require('./routes/passwordRoutes');
 
 app.use(bodyParser.json());
 
@@ -20,6 +21,7 @@ app.get('/',(req,res)=>{
 app.use("/auth",authRoutes);
 app.use("/event",eventRoutes);
 app.use('/user',userRoutes),
+app.use('/password',passwordRoutes);
 app.listen(PORT,()=>{
 console.log(`Server is running on PORT:${PORT}`);
 });
