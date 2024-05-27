@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Event = require('../models/event');
 
 // Controller method to get user profile
 const getUserProfile = async (req, res) => {
@@ -74,7 +75,133 @@ const updateUserProfile = async (req, res) => {
   }
 };
 
+
+const bookmark = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { eventId } = req.body;
+
+    // Find the event by ID
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({
+        success: false,
+        message: 'Event not found.'
+      });
+    }
+
+    // Find user by ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.'
+      });
+    }
+
+    // Ensure bookmarks is initialized
+    if (!user.bookmarks) {
+      user.bookmarks = [];
+    }
+
+    // Check if the event is already bookmarked
+    if (user.bookmarks.includes(event._id)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Event is already bookmarked.'
+      });
+    }
+
+    // Add event to bookmarks
+    user.bookmarks.push(event._id);
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Event bookmarked successfully.',
+      bookmarks: user.bookmarks
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while bookmarking the event.',
+      error: error.message
+    });
+  }
+};
+
+const deleteBookmark = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const eventId = req.params.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.'
+      });
+    }
+
+    // Ensure bookmarks is initialized
+    if (!user.bookmarks) {
+      user.bookmarks = [];
+    }
+
+    // Check if the event is bookmarked
+    const index = user.bookmarks.indexOf(eventId);
+    if (index === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Event not found in bookmarks.'
+      });
+    }
+
+    // Remove the item from the bookmarks array
+    user.bookmarks.splice(index, 1);
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Event removed from bookmarks successfully.'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while removing the event from bookmarks.',
+      error: error.message
+    });
+  }
+};
+
+const getBookmarkedEvents = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId).populate('bookmarks');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found.'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      bookmarks: user.bookmarks
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while fetching bookmarked events.',
+      error: error.message
+    });
+  }
+};
 module.exports = {
   getUserProfile,
-  updateUserProfile
+  updateUserProfile,
+  bookmark,
+  deleteBookmark,
+  getBookmarkedEvents
 };

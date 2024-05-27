@@ -60,7 +60,83 @@ const getAllEvents = async (req, res) => {
     });
   }
 }
+const deleteEvent = async(req,res)=>{
+  try{
+
+    const eventId  = req.params.id;
+
+    const event = await Event.findByIdAndDelete(eventId);
+    if (!event) {
+      return res.status(404).json({
+          success: false,
+          message: 'Event not found.',
+      });
+  }
+
+
+  // Return a success response
+  res.status(200).json({
+      success: true,
+      message: 'Event deleted successfully.',
+  });
+
+  
+  }
+  catch(error){
+    console.error('Error deleting event:', error);
+    res.status(500).json({
+        success: false,
+        message: 'An error occurred while deleting the event.',
+        error: error.message,
+    });
+  }
+}
+const updateEvent = async(req,res)=>{
+  try{
+    const eventId = req.params.id;
+    const updatedEvent = req.body;
+
+    const event = await Event.findByIdAndUpdate(
+      eventId,updatedEvent,{
+        new:true,
+        runValidators:true,
+        context: 'query'
+      }
+    );
+    if (!updatedEvent) {
+      return res.status(404).json({
+          success: false,
+          message: 'Event not found.',
+      });
+  }
+
+    res.status(200).json({
+      success: true,
+      message: 'Event updated successfully.',
+      event: updateEvent,
+  });
+
+
+  }
+  catch(error){
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while updating the event.',
+      error: error.message,
+    })
+  }
+}
+
+// bookmark event user 
+
+
+
+
 
 module.exports = {
-    addEvent,getAllEvents
+    addEvent,
+    getAllEvents,
+    deleteEvent,
+    updateEvent,
+
   };

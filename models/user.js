@@ -34,6 +34,11 @@ const userSchema = new mongoose.Schema({
     type:Boolean,
     default:false,
   },
+  bookmarks: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event',
+    default: []  // Initialize bookmarks as an empty array
+  }],
   otp: { type: String } // New field for OTP
 });
 userSchema.pre('save',async function(next){
